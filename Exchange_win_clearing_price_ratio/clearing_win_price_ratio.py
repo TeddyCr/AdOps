@@ -12,14 +12,20 @@ Assumptions: in a true second price auction, the probability of the win bid to b
 is (1/[b - a]) where b represents the higher bound of possible bids (i.e if max bid = $4, possible bids 
 are 400), and a the minimum possibility of bids (i.e 0.01).
 
-Data: TBD  
+   
+-------------
+||IMPORTANT||
+-------------
+
+File format: File is of extension .txt and data are structured in the following way:
+   - bid ID (integer), Exchange (String), impressions (integer), clearing price (float), max bid submitted (float) 
+
 """
 
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import random as rd
 import numpy as np
-import scipy
 from scipy.stats import chisquare
 
 IMPRESSIONS = 0
@@ -30,9 +36,9 @@ RATIO = 3
 
 def loadDataFile(filename):
     """Return a dictionnary mapping every instance of exchange to (impressions, cost, max_bid_ui), where
-    exchange is a string impressions is an integer, and cost and max_bid_ui are float rounded to 2 decimals
-    in a tuple. Each line in the file represent a specific instance of an impression occurring [ideally] 
-    occuring in an exchange"""
+    exchange is a string, impressions is an integer, and cost and max_bid_ui are float rounded to 2 decimals
+    in a tuple. Each line in the file represent a specific instance of an impression occurring occuring in an exchange
+    """
     
     exchange_data_info = defaultdict(list)
     inputFile = open(filename)
@@ -149,6 +155,9 @@ class expectedData(object):
     
     
 def runAuctionTest(filename, exchange = None):
+    """
+    Main function use to run test. Enter file name + exchange name (if multiple exchange data input, leave to none otherwise).
+    """
     inputData = loadDataFile(filename)
     filtered_input_data = pickExchange(inputData, exchange).getFilteredExchange()
     compute_ratio_list = bidsRatio(filtered_input_data).getRatio()
@@ -157,6 +166,9 @@ def runAuctionTest(filename, exchange = None):
     
     
 def plotGraph(final_data_set, exchange):
+    """
+    Plot the distribution of impressions with ration in the x-axis and %tage of impressions in the y-axis
+    """
     ratios = []
     bins = []
     for k,v in final_data_set.items():
@@ -189,7 +201,7 @@ def plotGraph(final_data_set, exchange):
 
 
 def generateRandomTest(number_bids, higher_bound_bid, run_random=False):
-    """Generate random ratio to evaluate what distribution under total random conditions.
+    """Generate random ratio to evaluate what is a uniform distribution under total random conditions.
     higher_bound_bid is a float"""
     bins = []
     random_ratios = []
@@ -232,6 +244,9 @@ def generateRandomTest(number_bids, higher_bound_bid, run_random=False):
         return expected_data.getRatioDistribution()
 
 def calculateChiSquare(observed_data, expected_ratio):
+    """
+    Evaluate significance of the test by computing ChiSquare for the data input
+    """
     tot_observed_data = sum(observed_data)
     tot_observed_data = int(tot_observed_data)
     
