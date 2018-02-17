@@ -130,7 +130,7 @@ def main(file):
     
     return non_matches
 
-print(main("test_file.csv"))
+print(main("domain_exchange_list.csv"))
 
 
 
