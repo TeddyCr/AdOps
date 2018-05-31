@@ -319,7 +319,7 @@ def displayClusters(clusters, column_names):
     return "Your file(s) ha(s)(ve) been succesfuly generated" 
                     
 
-print(runTestKmeans('clustering_template.csv', k=0, cut_off=0.0001, iterations=5, threshold=0.05))
+print(runTestKmeans('clustering_template.csv', k=0, cut_off=0.0001, iterations=100, threshold=0.05))
 
 
 
